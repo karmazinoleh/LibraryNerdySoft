@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface BorrowingRepository extends JpaRepository<Borrowing, Long> {
 
     Optional<Borrowing> findByBookAndMember(Book book, Member member);
+    List<Borrowing> findAllByMember(Member member);
 
     long countByMember(Member member);
     long countByBook(Book book);
@@ -18,4 +19,6 @@ public interface BorrowingRepository extends JpaRepository<Borrowing, Long> {
     boolean existsByMember(Member member);
 
     void deleteByBookAndMember(Book book, Member member);
+    void deleteAllByMember(Member member);
+    void deleteAllByBook(Book book);
 }

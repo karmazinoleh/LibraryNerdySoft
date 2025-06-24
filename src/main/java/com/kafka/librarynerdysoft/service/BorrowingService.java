@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,6 +66,7 @@ public class BorrowingService {
 
     public void returnBook(Long bookId, Long memberId) {
         Member member = memberRepository.findById(memberId).get();
+        // !!!
         Book book = bookRepository.findById(bookId).get();
 
         // increase amount of books
@@ -71,6 +75,34 @@ public class BorrowingService {
 
         // delete
         borrowingRepository.deleteByBookAndMember(book, member);
-
     }
+
+    public List<Book> getBooksBorrowedByMemberName(String name){
+        Member member = memberRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Member Not Found"));
+
+        List<Borrowing> borrowings = borrowingRepository.findAllByMember(member);
+
+        return borrowings
+                .stream().map(Borrowing::getBook).toList();
+    }
+
+    public List<String> getDistinctBorrowedBookTitles() {
+        return borrowingRepository.findAll().stream()
+                .map(b -> b.getBook().getTitle())
+                .distinct()
+                .toList();
+    }
+
+    public Map<String, Long> getBookTitleToBorrowCount() {
+        return borrowingRepository.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        borrowing -> borrowing.getBook().getTitle(),
+                        Collectors.counting()
+                ));
+    } // todo: remake it with Query (SQL) in repository.
+
+
+
+
 }
