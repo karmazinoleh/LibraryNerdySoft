@@ -55,6 +55,7 @@ public class BookService {
     }
 
     public void deleteBook(Long id) {
+        // check if book is borrowed
         bookRepository.deleteById(id);
     }
 
