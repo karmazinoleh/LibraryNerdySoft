@@ -4,7 +4,9 @@ import com.kafka.librarynerdysoft.dto.BookCreatedRequest;
 import com.kafka.librarynerdysoft.dto.MemberCreatedRequest;
 import com.kafka.librarynerdysoft.entity.Book;
 import com.kafka.librarynerdysoft.entity.Member;
+import com.kafka.librarynerdysoft.repository.BorrowingRepository;
 import com.kafka.librarynerdysoft.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,8 +17,11 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    public MemberService(MemberRepository memberRepository) {
+    private final BorrowingRepository borrowingRepository;
+
+    public MemberService(MemberRepository memberRepository, BorrowingRepository borrowingRepository) {
         this.memberRepository = memberRepository;
+        this.borrowingRepository = borrowingRepository;
     }
 
     public List<Member> getAllMembers() {
@@ -46,6 +51,13 @@ public class MemberService {
     }
 
     public void deleteMember(Long id) {
+        Optional<Member> memberToDelete = memberRepository.findById(id);
+        if (memberToDelete.isEmpty()){
+            throw new EntityNotFoundException("Member with id " + id + " not found");
+        }
+        if (borrowingRepository.countByMember(memberToDelete.get()) > 0) {
+            throw new RuntimeException("Member with id " + id + " is borrowing a book");
+        }
         memberRepository.deleteById(id);
     }
 }

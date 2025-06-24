@@ -3,6 +3,8 @@ package com.kafka.librarynerdysoft.service;
 import com.kafka.librarynerdysoft.dto.BookCreatedRequest;
 import com.kafka.librarynerdysoft.entity.Book;
 import com.kafka.librarynerdysoft.repository.BookRepository;
+import com.kafka.librarynerdysoft.repository.BorrowingRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final BorrowingRepository borrowingRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, BorrowingRepository borrowingRepository) {
         this.bookRepository = bookRepository;
+        this.borrowingRepository = borrowingRepository;
     }
 
     public List<Book> getAllBooks() {
@@ -56,6 +60,13 @@ public class BookService {
 
     public void deleteBook(Long id) {
         // check if book is borrowed
+        Optional<Book> bookToDelete = bookRepository.findById(id);
+        if (bookToDelete.isEmpty()){
+            throw new EntityNotFoundException("Book with id " + id + " not found");
+        }
+        if (borrowingRepository.countByBook(bookToDelete.get()) > 0) {
+            throw new RuntimeException("Member with id " + id + " is borrowing a book");
+        }
         bookRepository.deleteById(id);
     }
 

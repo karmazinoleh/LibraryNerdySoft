@@ -26,7 +26,7 @@ public class BookController {
 
     public BookController(BookRepository bookRepository, BookService bookService) {
         this.bookRepository = bookRepository;
-        this.bookService = new BookService(bookRepository);
+        this.bookService = bookService;
     }
 
     @GetMapping

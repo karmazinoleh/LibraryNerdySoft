@@ -22,7 +22,7 @@ public class MemberController {
 
     public MemberController(MemberRepository memberRepository, MemberService memberService) {
         this.memberRepository = memberRepository;
-        this.memberService = new MemberService(memberRepository);
+        this.memberService = memberService;
     }
 
     @GetMapping
@@ -58,7 +58,7 @@ public class MemberController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMemberById(@PathVariable Long id) {
         memberService.deleteMember(id);
         return ResponseEntity.noContent().build();

@@ -13,6 +13,7 @@ public interface BorrowingRepository extends JpaRepository<Borrowing, Long> {
     Optional<Borrowing> findByBookAndMember(Book book, Member member);
 
     long countByMember(Member member);
+    long countByBook(Book book);
 
     boolean existsByMember(Member member);
 
