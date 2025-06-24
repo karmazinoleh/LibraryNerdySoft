@@ -3,6 +3,7 @@ package com.kafka.librarynerdysoft.controller;
 import com.kafka.librarynerdysoft.dto.BookCreatedRequest;
 import com.kafka.librarynerdysoft.repository.BookRepository;
 import com.kafka.librarynerdysoft.service.BookService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody BookCreatedRequest request) {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookCreatedRequest request) {
         // todo: BookResponcse dto
         Book savedBook = bookService.createBook(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
@@ -53,7 +54,7 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(
             @PathVariable("id") Long id,
-            @RequestBody BookCreatedRequest request
+            @Valid @RequestBody BookCreatedRequest request
             ) {
         Optional<Book> book = bookService.updateBook(id, request);
         if (book.isPresent()) {

@@ -5,6 +5,7 @@ import com.kafka.librarynerdysoft.entity.Book;
 import com.kafka.librarynerdysoft.entity.Member;
 import com.kafka.librarynerdysoft.repository.MemberRepository;
 import com.kafka.librarynerdysoft.service.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +41,14 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<Member> createMember(@RequestBody MemberCreatedRequest request) {
+    public ResponseEntity<Member> createMember(@Valid @RequestBody MemberCreatedRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Member> updateMember(
             @PathVariable Long id,
-            @RequestBody MemberCreatedRequest request
+            @Valid @RequestBody MemberCreatedRequest request
             ){
         Optional<Member> member = memberService.updateMember(id, request);
         if (member.isEmpty()){
