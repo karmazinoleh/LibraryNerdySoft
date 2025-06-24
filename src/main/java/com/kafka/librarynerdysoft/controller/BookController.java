@@ -2,7 +2,7 @@ package com.kafka.librarynerdysoft.controller;
 
 import com.kafka.librarynerdysoft.dto.BookCreatedRequest;
 import com.kafka.librarynerdysoft.repository.BookRepository;
-import lombok.RequiredArgsConstructor;
+import com.kafka.librarynerdysoft.service.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,20 +21,21 @@ public class BookController {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, BookService bookService) {
         this.bookRepository = bookRepository;
+        this.bookService = new BookService(bookRepository);
     }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return ResponseEntity.ok(books);
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable("id") Long id) {
-        Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> book = bookService.getBookById(id);
         if (book.isPresent()) {
             return ResponseEntity.ok(book.get());
         } else {
@@ -45,14 +46,8 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody BookCreatedRequest request) {
         // todo: BookResponcse dto
-        Book book = new Book();
-        // todo: mapStruct
-        book.setTitle(request.getTitle());
-        book.setAuthor(request.getAuthor());
-        book.setAmount(request.getAmount());
-
-        Book savedBook = bookRepository.save(book);
-        return ResponseEntity.ok(savedBook);
+        Book savedBook = bookService.createBook(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
     }
 
     @PutMapping("/{id}")
@@ -60,27 +55,17 @@ public class BookController {
             @PathVariable("id") Long id,
             @RequestBody BookCreatedRequest request
             ) {
-
-        Optional<Book> book = bookRepository.findById(id);
-
-        if (book.isEmpty()) {
+        Optional<Book> book = bookService.updateBook(id, request);
+        if (book.isPresent()) {
+            return ResponseEntity.ok(book.get());
+        } else {
             return ResponseEntity.notFound().build();
         }
-
-        book.get().setTitle(request.getTitle());
-        book.get().setAuthor(request.getAuthor());
-        book.get().setAmount(request.getAmount());
-
-        Book updatedBook = bookRepository.save(book.get());
-        return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookById(@PathVariable("id") Long id) {
-        if (!bookRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        bookRepository.deleteById(id);
+        bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
