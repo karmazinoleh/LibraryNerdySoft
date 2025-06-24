@@ -6,16 +6,6 @@ public class BookCreatedRequest {
 
     private String author;
 
-    private int amount;
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public String getAuthor() {
         return author;
     }

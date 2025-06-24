@@ -37,7 +37,7 @@ public class BookService {
             Book newBook = new Book();
             newBook.setTitle(request.getTitle());
             newBook.setAuthor(request.getAuthor());
-            newBook.setAmount(request.getAmount());
+            newBook.setAmount(1);
             return bookRepository.save(newBook);
         }
     }
@@ -48,7 +48,6 @@ public class BookService {
             Book book = optionalBook.get();
             book.setTitle(request.getTitle());
             book.setAuthor(request.getAuthor());
-            book.setAmount(request.getAmount());
             return Optional.of(bookRepository.save(book));
         } else {
             return Optional.empty();
