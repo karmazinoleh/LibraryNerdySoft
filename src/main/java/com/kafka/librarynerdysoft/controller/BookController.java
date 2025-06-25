@@ -4,6 +4,7 @@ import com.kafka.librarynerdysoft.dto.BookCreatedRequest;
 import com.kafka.librarynerdysoft.repository.BookRepository;
 import com.kafka.librarynerdysoft.service.BookService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,17 +18,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
+@AllArgsConstructor
 public class BookController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final BookRepository bookRepository;
     private final BookService bookService;
-
-    public BookController(BookRepository bookRepository, BookService bookService) {
-        this.bookRepository = bookRepository;
-        this.bookService = bookService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {

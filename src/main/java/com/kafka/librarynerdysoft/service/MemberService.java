@@ -7,6 +7,7 @@ import com.kafka.librarynerdysoft.entity.Member;
 import com.kafka.librarynerdysoft.repository.BorrowingRepository;
 import com.kafka.librarynerdysoft.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,15 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BorrowingRepository borrowingRepository;
-
-    public MemberService(MemberRepository memberRepository, BorrowingRepository borrowingRepository) {
-        this.memberRepository = memberRepository;
-        this.borrowingRepository = borrowingRepository;
-    }
 
     public List<Member> getAllMembers() {
         return memberRepository.findAll();

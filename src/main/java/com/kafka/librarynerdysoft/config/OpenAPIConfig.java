@@ -14,7 +14,7 @@ public class OpenAPIConfig {
                 .info(new Info()
                         .title("Library API")
                         .version("1.0")
-                        .description("Basic OpenAPI Example")
+                        .description("Made by Oleh Karmazin")
                 );
     }
 }

@@ -6,6 +6,7 @@ import com.kafka.librarynerdysoft.entity.Member;
 import com.kafka.librarynerdysoft.repository.MemberRepository;
 import com.kafka.librarynerdysoft.service.MemberService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/members")
+@AllArgsConstructor
 public class MemberController {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
-
-    public MemberController(MemberRepository memberRepository, MemberService memberService) {
-        this.memberRepository = memberRepository;
-        this.memberService = memberService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Member>> getAllMembers() {

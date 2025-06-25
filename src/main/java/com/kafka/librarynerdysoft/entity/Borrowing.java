@@ -1,9 +1,16 @@
 package com.kafka.librarynerdysoft.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Borrowing {
 
     @Id
@@ -18,36 +25,4 @@ public class Borrowing {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    public Borrowing(Long id, Member member, Book book) {
-        this.id = id;
-        this.member = member;
-        this.book = book;
-    }
-
-    public Borrowing() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
 }

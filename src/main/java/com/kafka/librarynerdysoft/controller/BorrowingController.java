@@ -5,6 +5,7 @@ import com.kafka.librarynerdysoft.entity.Book;
 import com.kafka.librarynerdysoft.entity.Borrowing;
 import com.kafka.librarynerdysoft.repository.BorrowingRepository;
 import com.kafka.librarynerdysoft.service.BorrowingService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/borrow")
+@AllArgsConstructor
 public class BorrowingController {
 
     private final BorrowingService borrowingService;
-
-    public BorrowingController(BorrowingService borrowingService) {
-        this.borrowingService = borrowingService;
-    }
 
     @PostMapping
     public ResponseEntity<Borrowing> borrowBook(@RequestBody BorrowBookRequest request) {

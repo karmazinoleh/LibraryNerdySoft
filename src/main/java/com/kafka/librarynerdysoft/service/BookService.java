@@ -5,20 +5,17 @@ import com.kafka.librarynerdysoft.entity.Book;
 import com.kafka.librarynerdysoft.repository.BookRepository;
 import com.kafka.librarynerdysoft.repository.BorrowingRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
     private final BorrowingRepository borrowingRepository;
-
-    public BookService(BookRepository bookRepository, BorrowingRepository borrowingRepository) {
-        this.bookRepository = bookRepository;
-        this.borrowingRepository = borrowingRepository;
-    }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();

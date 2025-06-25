@@ -9,8 +9,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -22,27 +24,4 @@ public class Member {
    // @Builder.Default
     private LocalDateTime memberDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getMemberDate() {
-        return memberDate;
-    }
-
-    public void setMemberDate(LocalDateTime memberDate) {
-        this.memberDate = memberDate;
-    }
 }
